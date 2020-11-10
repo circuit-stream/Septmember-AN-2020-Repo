@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
+    <ImageTarget name="Boiler_Control_Panel" size="0.100000 0.117647" />
     <ImageTarget name="CS_Back" size="0.100000 0.055188" />
     <ImageTarget name="CS_Front" size="0.100000 0.052736" />
   </Tracking>

@@ -9,6 +9,8 @@ public class VRGrab : MonoBehaviour
 
     public Animator m_anim;
 
+    public Haptics m_hScript;
+
     private GameObject m_collidingObject;
     private GameObject m_heldObject;
 
@@ -24,6 +26,15 @@ public class VRGrab : MonoBehaviour
     {
         m_collidingObject = null;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Vibrate")
+        {
+            m_hScript.Vibrate(0.5f, 0.1f);
+        }
+    }
+
 
     void Update()
     {
