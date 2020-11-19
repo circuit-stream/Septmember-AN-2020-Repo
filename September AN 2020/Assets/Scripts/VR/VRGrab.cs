@@ -14,6 +14,11 @@ public class VRGrab : MonoBehaviour
     private GameObject m_collidingObject;
     private GameObject m_heldObject;
 
+
+    private List<Vector3> m_handPositions = new List<Vector3>();
+    public float m_throwingForce = 4000f;
+    //public Transform m_vrRig;
+
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Interactable")
@@ -44,7 +49,8 @@ public class VRGrab : MonoBehaviour
             m_anim.SetBool("isGrabbing", true);
             if(m_collidingObject)
             {
-                Grab();
+                //Grab();
+                PhysicsGrab();
             }
         }
         else if (Input.GetAxis(m_gripAxisName) < 0.8f && m_gripHeld == true)
@@ -53,7 +59,17 @@ public class VRGrab : MonoBehaviour
             m_anim.SetBool("isGrabbing", false);
             if(m_heldObject)
             {
-                Release();
+                //Release();
+                ThrowObject();
+            }
+        }
+
+        if(m_heldObject)
+        {
+            m_handPositions.Add(transform.position);
+            if(m_handPositions.Count > 4)
+            {
+                m_handPositions.RemoveAt(0);
             }
         }
     }
@@ -70,6 +86,42 @@ public class VRGrab : MonoBehaviour
         m_heldObject.transform.SetParent(null);
         m_heldObject.GetComponent<Rigidbody>().isKinematic = false;
         m_heldObject = null;
+    }
+
+    void PhysicsGrab()
+    {
+        m_heldObject = m_collidingObject;
+        FixedJoint fx = gameObject.AddComponent<FixedJoint>();
+        fx.connectedBody = m_heldObject.GetComponent<Rigidbody>();
+        fx.breakForce = 5000f;
+        fx.breakTorque = 5000f;
+        m_heldObject.transform.SetParent(transform);
+    }
+
+    private void OnJointBreak(float breakForce)
+    {
+        m_heldObject.transform.SetParent(null);
+        m_heldObject = null;
+    }
+
+    void ThrowObject()
+    {
+        Vector3 dir;
+        Rigidbody rb = m_heldObject.GetComponent<Rigidbody>();
+        Destroy(GetComponent<FixedJoint>());
+        m_heldObject.transform.SetParent(null);
+        m_heldObject = null;
+
+        try
+        {
+            dir = m_handPositions[3] - m_handPositions[0];
+        }
+        catch
+        {
+            dir = Vector3.zero;
+        }
+
+        rb.AddForce(dir * m_throwingForce);
     }
 }
 

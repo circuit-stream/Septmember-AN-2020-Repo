@@ -43,7 +43,7 @@ public class VRTeleport : MonoBehaviour
             {
                 m_canTeleport = false;
 
-                m_difference = m_vrRig.position - m_vrCamera.localPosition;
+                m_difference = m_vrRig.position - m_vrCamera.position;
                 m_difference.y = 0;
 
                 m_vrRig.position = m_hit.point + m_difference;
