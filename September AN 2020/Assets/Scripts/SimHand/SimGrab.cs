@@ -54,6 +54,11 @@ public class SimGrab : MonoBehaviour
             {
                 m_handPositions.RemoveAt(0);
             }
+
+            if(Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                m_heldObject.SendMessage("Interact");
+            }
         }
     }
 

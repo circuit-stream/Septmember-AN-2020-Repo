@@ -7,6 +7,9 @@ public class VRGrab : MonoBehaviour
     public string m_gripAxisName;
     private bool m_gripHeld;
 
+    public string m_triggerAxisName;
+    private bool m_triggerHeld;
+
     public Animator m_anim;
 
     public Haptics m_hScript;
@@ -71,6 +74,19 @@ public class VRGrab : MonoBehaviour
             {
                 m_handPositions.RemoveAt(0);
             }
+        }
+
+        if(Input.GetAxis(m_triggerAxisName) > 0.8f && !m_triggerHeld)
+        {
+            m_triggerHeld = true;
+            if(m_heldObject)
+            {
+                m_heldObject.SendMessage("Interact");
+            }
+        }
+        if(Input.GetAxis(m_triggerAxisName) < 0.8f && m_triggerHeld)
+        {
+            m_triggerHeld = false;
         }
     }
 
