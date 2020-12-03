@@ -42,6 +42,7 @@ public class SimGrab : MonoBehaviour
             m_anim.SetBool("isGrabbing", false);
             if(m_heldObject)
             {
+                m_heldObject.SendMessage("Release");
                 //Release();
                 ThrowObject();
             }
@@ -58,6 +59,10 @@ public class SimGrab : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.Mouse0))
             {
                 m_heldObject.SendMessage("Interact");
+            }
+            else if(Input.GetKeyUp(KeyCode.Mouse0))
+            {
+                m_heldObject.SendMessage("Release");
             }
         }
     }
@@ -88,6 +93,7 @@ public class SimGrab : MonoBehaviour
 
     private void OnJointBreak(float breakForce)
     {
+        m_heldObject.SendMessage("Release");
         m_heldObject.transform.SetParent(null);
         m_heldObject = null;
     }

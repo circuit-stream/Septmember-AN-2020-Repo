@@ -63,6 +63,7 @@ public class VRGrab : MonoBehaviour
             if(m_heldObject)
             {
                 //Release();
+                m_heldObject.SendMessage("Release");
                 ThrowObject();
             }
         }
@@ -87,6 +88,10 @@ public class VRGrab : MonoBehaviour
         if(Input.GetAxis(m_triggerAxisName) < 0.8f && m_triggerHeld)
         {
             m_triggerHeld = false;
+            if(m_heldObject)
+            {
+                m_heldObject.SendMessage("Release");
+            }
         }
     }
 
@@ -116,6 +121,7 @@ public class VRGrab : MonoBehaviour
 
     private void OnJointBreak(float breakForce)
     {
+        m_heldObject.SendMessage("Release");
         m_heldObject.transform.SetParent(null);
         m_heldObject = null;
     }
